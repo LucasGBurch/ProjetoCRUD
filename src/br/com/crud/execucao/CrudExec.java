@@ -85,6 +85,8 @@ public class CrudExec {
 				encerrar();
 				break;
 			}
+			// Motivo para não usar o Default:
+			// Precisava chamar o menu novamente (o que não era possível dentro do próprio método)
 		}
 	}
 	
@@ -93,7 +95,9 @@ public class CrudExec {
 	public static void criarUsuario() {
 		id++; // id novo criado;
 		
-		System.out.print("Insira o Nome: ");
+		int ind = id - 1; //  - 1 para a array aproveitar a posição 0;
+		
+		System.out.print("\nInsira o Nome: ");
 		String nome = entrada.next();
 		
 		System.out.print("Insira o Telefone: ");
@@ -102,7 +106,7 @@ public class CrudExec {
 		System.out.print("Insira data de nascimento (dd/mm/yyyy): ");
 		String nasc = entrada.next();
 		
-		System.out.print("Deseja inserir nota (caso positivo, digite sim)? ");
+		System.out.print("Deseja inserir nota? Digite sim para inserir\n(ou qualquer outra resposta se não quiser): ");
 		String nota = entrada.next();
 		Double notaFinal = null; // Inicializar o tipo fora do if;
 		
@@ -121,24 +125,24 @@ public class CrudExec {
 		if (notaFinal != null && notaFinal >= 0.0 && notaFinal <= 10.0) {
 			tipo = "Aluno";
 			Aluno usuario = new Aluno(nome, tel, nasc, cad, alt, notaFinal);
-			listaTotal[id - 1][0] = usuario.getNome();
-			listaTotal[id - 1][1] = usuario.getTelefone();
-			listaTotal[id - 1][2] = usuario.getNascimento();
-			listaTotal[id - 1][3] = usuario.getCadastro().toString();
-			listaTotal[id - 1][4] = usuario.getAlteracao().toString();
-			listaTotal[id - 1][5] = usuario.getNotaFinal().toString();
+			listaTotal[ind][0] = usuario.getNome();
+			listaTotal[ind][1] = usuario.getTelefone();
+			listaTotal[ind][2] = usuario.getNascimento();
+			listaTotal[ind][3] = usuario.getCadastro().toString();
+			listaTotal[ind][4] = usuario.getAlteracao().toString();
+			listaTotal[ind][5] = usuario.getNotaFinal().toString();
 		} else {
 			tipo = "Pessoa (sem nota)";
 			Pessoa usuario = new Pessoa(nome, tel, nasc, cad, alt);
-			listaTotal[id - 1][0] = usuario.getNome();
-			listaTotal[id - 1][1] = usuario.getTelefone();
-			listaTotal[id - 1][2] = usuario.getNascimento();
-			listaTotal[id - 1][3] = usuario.getCadastro().toString();
-			listaTotal[id - 1][4] = usuario.getAlteracao().toString();
-			listaTotal[id - 1][5] = null;
-		} //  - 1 para a array aproveitar a posição 0;
+			listaTotal[ind][0] = usuario.getNome();
+			listaTotal[ind][1] = usuario.getTelefone();
+			listaTotal[ind][2] = usuario.getNascimento();
+			listaTotal[ind][3] = usuario.getCadastro().toString();
+			listaTotal[ind][4] = usuario.getAlteracao().toString();
+			listaTotal[ind][5] = null;
+		}
 			
-		System.out.println("Usuário tipo " + tipo + " criado:"
+		System.out.println("\nUsuário tipo " + tipo + " criado:"
 				+ "\nId: " + id
 				+ "\nNome: " + nome);
 		
@@ -152,7 +156,7 @@ public class CrudExec {
 			System.out.println("\nNão há usuários para listar."
 					+ " Você pode criá-los usando a opção 1.\n");
 		} else {
-			System.out.println("Lista de Usuários.\nAlunos com nota"
+			System.out.println("\nLista de Usuários.\nAlunos com nota"
 					+ ", Pessoas com nota null:\n");
 		
 		for (int i = 0; i < id; i++) {
@@ -185,8 +189,7 @@ public class CrudExec {
 						break;
 					}
 				}
-		}
-		System.out.println();
+			}
 		}
 		
 		menu();
@@ -196,7 +199,7 @@ public class CrudExec {
 	public static void atualizarUsuario(int num) {
 		
 		if (num > 0 && num <= id) {
-			System.out.print("Insira o Nome: ");
+			System.out.print("\nInsira o Nome: ");
 			String nome = entrada.next();
 			
 			System.out.print("Insira o Telefone: ");
@@ -208,31 +211,33 @@ public class CrudExec {
 			// Date cad = new Date(); Retirado da atualização.
 			Date alt = new Date(); // Alteração atualiza a data.
 			
-			if (listaTotal[num - 1][5] != null) {
+			int ind = num - 1;
+			
+			if (listaTotal[ind][5] != null) {
 				System.out.print("Insira nota Final de 0 a 10: ");
 				Double notaFinal = entrada.nextDouble();
 				
-				listaTotal[num - 1][0] = nome;
-				listaTotal[num - 1][1] = tel;
-				listaTotal[num - 1][2] = nasc;
-				listaTotal[num - 1][4] = alt.toString();
-				listaTotal[num - 1][5] = notaFinal.toString();
+				listaTotal[ind][0] = nome;
+				listaTotal[ind][1] = tel;
+				listaTotal[ind][2] = nasc;
+				listaTotal[ind][4] = alt.toString();
+				listaTotal[ind][5] = notaFinal.toString();
 			
 			} else {
 				
-				listaTotal[num - 1][0] = nome;
-				listaTotal[num - 1][1] = tel;
-				listaTotal[num - 1][2] = nasc;
-				listaTotal[num - 1][4] = alt.toString();
+				listaTotal[ind][0] = nome;
+				listaTotal[ind][1] = tel;
+				listaTotal[ind][2] = nasc;
+				listaTotal[ind][4] = alt.toString();
 				// listaTotal[id - 1][5] = null; já é null para Pessoa criada!
 				// Não houve orientação para a atualização mudar o tipo.
 			}
 			
-			System.out.println("Usuário atualizado.");
+			System.out.println("\nUsuário atualizado.");
 			menu();
 			
 		} else {
-			System.out.println("Usuário não existe! Verifique a lista do Menu.");
+			System.out.println("\nUsuário não existe! Verifique a lista do Menu.");
 			menu();
 		}
 				
@@ -266,19 +271,19 @@ public class CrudExec {
 			// Ficamos com um id a menos ao deletar um usuário (para não listar nulls)
 			id--;
 			
-			System.out.println("\nUsuário deletado");		
+			System.out.println("\nUsuário deletado.");		
 			
 			menu();
 			
 		} else {
-			System.out.println("Usuário não existe! Verifique a lista do Menu.");
+			System.out.println("\nUsuário não existe! Verifique a lista do Menu.");
 			menu();
 		}
 	}
 
 	
 	public static void encerrar() {
-		System.out.println("Programa Encerrado.");
+		System.out.println("\nPrograma Encerrado.");
 		entrada.close();
 	}
 	
